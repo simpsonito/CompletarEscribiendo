@@ -1,5 +1,4 @@
-CompletarEscribiendo
-Compatible diseño responsivo
+CompletarEscribiendo (Compatible diseño responsivo)
 ====================
 http://adib.awardspace.com
 
