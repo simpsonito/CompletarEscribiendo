@@ -11,11 +11,13 @@ p{
 	line-height: 1.3em;	
 }
 body{
-	-moz-border-radius: 8px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	padding: 10px 10px 30px 30px;
 	border: 1px solid #adaa9f;
-	-moz-box-shadow: 0 2px 2px #9c9c9c;
+    box-shadow: 0 2px 2px #9c9c9c;
+    -moz-box-shadow: 0 2px 2px #9c9c9c;
 	-webkit-box-shadow: 0 2px 2px #9c9c9c;
 	margin:2em;
 	height: 100%;
@@ -88,4 +90,21 @@ input:hover[type="submit"] {
 	border-color: #999;	
 	transition: color 500ms ease, background-color 500ms ease;
 	-webkit-transition: color 500ms ease, background-color 500ms ease;
+}
+@media (max-width: 480px) {
+    html{
+        margin:0;
+        padding: 0;
+    }
+    body{
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        margin:0.5em;
+    }
+    ol{
+        padding-left:1.5em;
+    }
 }
