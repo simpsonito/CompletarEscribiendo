@@ -4,62 +4,70 @@ $(function(){
 });
 
 function iniciar(){
-	var caja;
-	$($("#completable input")).each(function(index){
-		caja = $(this);
-		caja.attr("class", "" );
-		caja.attr("size", caja.attr("respuesta").length + 2);
-		caja.focus(function(e){
-			console.log($(this).attr("respuesta"));
-			$(this).attr("class", "");
-		});
-	});
+    var secciones = $(".completable");
+    //var inputs2 = secciones.find("input");
+    secciones.each(function(index, seccion){
+        //console.log("secciones", index, seccion);
+        seccion.inputs = $(seccion).find("input");
+        seccion.inputs.each(function(indice, cajaElemento){
+            var caja = $(cajaElemento);
+            caja.attr("class", "" );
+            caja.attr("size", caja.attr("data-respuesta").length + 2);
+            caja.focus(function(e){
+                console.log($(this).attr("data-respuesta"));
+                $(this).attr("class", "");
+            });
+        });
+        seccion.botonRevisar = $(seccion.parentElement).find(".botonCalificar");
+        seccion.botonRevisar.click(function(){
+            //console.log(seccion.inputs);
+            revisar(seccion);
+        });
+        seccion.botonLimpiar = $(seccion.parentElement).find(".botonReset");
+        seccion.botonLimpiar.click(function(){
+            //console.log(seccion.inputs);
+            reiniciar(seccion);
+        });
+    });
+
 }
 
-function revisar(){
+function revisar(seccion){
 	var caja;
-	var buenas = 0;
-	var total = $("#completable input").length;
-	var mensajeFinal = "";
-	$($("#completable input")).each(function(index){
-		caja = $(this);
+    var buenas = 0;
+	var total = seccion.inputs.length;
+	var isComplete = true;
+    seccion.inputs.each(function(index, cajaElemento){
+		caja = $(cajaElemento);
 		if(caja.val() != ""){
-			if(quitarAcentos(caja.attr("respuesta")) == quitarAcentos(caja.val())){
+			if(quitarAcentos(caja.attr("data-respuesta")) == quitarAcentos(caja.val())){
 				caja.attr("class", "correcto" );
 				caja.prop('disabled', true);
-				caja.val(caja.attr("respuesta"));
+				caja.val(caja.attr("data-respuesta"));
 				++buenas;
 			} else {
 				caja.attr("class", "incorrecto" );
 			}
 		} else {
-			mensajeFinal = "Por favor llena todos los campos de texto";
+			isComplete = false;
 		}
 	});
-	if(mensajeFinal == ""){
-		switch (buenas) {
-		case 10:
-			mensajeFinal = "Felicidades, has logrado una comprensión integral de los temas.";
-			break;
-		case 9:
-		case 8:
-			mensajeFinal = "Tienes un buen manejo de los temas, pero aún puedes mejorar.";
-			break;
-		case 7:
-		case 6:
-			mensajeFinal = "Manejas algunos aspectos importantes, pero es necesario fortalecer el estudio de los temas.";
-			break;
-		default://Cualquier otro (5 ó menos)
-			mensajeFinal = "Revisa nuevamente los contenidos de la unidad.";
-		}
-		retroalimentar(mensajeFinal+"<br/>Obtuviste <b>"+buenas+"</b> de <b>"+total+"</b>.");
-	} else {
-		retroalimentar(mensajeFinal);
-	}
-	
+    retroalimentar(seccion, buenas, total, isComplete);
 }
-function retroalimentar(cadena){
-	$('#retroalimentacion').html(cadena);
+function retroalimentar(seccion, buenas, total, completo){
+	//$($(seccion.parentElement).find('.retroalimentacion')[0]).html(cadena);
+    var contenedor = $(seccion.parentElement);
+    var retroTexto = "";
+    if(completo){
+        if(buenas === total){
+            retroTexto = contenedor.find('.retro.bien').html();
+        } else {
+            retroTexto = contenedor.find('.retro.mal').html();
+        }
+    } else{
+        retroTexto = "Por favor llena todos los campos de texto";
+    }
+    contenedor.find('.retroalimentacion').html(retroTexto);
 }
 function quitarAcentos(str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
@@ -76,13 +84,12 @@ function quitarAcentos(str) {
     .replace(/-+/g, '-'); // collapse dashes
   return str;
 }
-function reiniciar(){
-	var caja;
-	$($("#completable input")).each(function(index){
-		caja = $(this);
-		caja.val("");
+function reiniciar(seccion){
+    seccion.inputs.each(function(index, elemento){
+		var caja = $(elemento);
+        caja.val("");
 		caja.attr("class", "" );
 		caja.prop('disabled', false);
 	});
-	retroalimentar("");
+    $(seccion.parentElement).find('.retroalimentacion').html("");
 }

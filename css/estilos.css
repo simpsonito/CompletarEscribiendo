@@ -108,3 +108,17 @@ input:hover[type="submit"] {
         padding-left:1.5em;
     }
 }
+
+section {
+	border: 1px dashed #d9d5c7;
+	border-radius: 0.5em;
+	margin-bottom: 1em;
+	padding: 0.5em;
+}
+section div.retro{
+	display: none;
+}
+section div.retroalimentacion{
+	display: inline-block;
+	font-size: 11px;
+}
