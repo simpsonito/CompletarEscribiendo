@@ -37,21 +37,13 @@ function revisar(){
 		}
 	});
 	if(mensajeFinal == ""){
-		switch (buenas) {
-		case 10:
-			mensajeFinal = "Felicidades, has logrado una comprensión integral de los temas.";
-			break;
-		case 9:
-		case 8:
-			mensajeFinal = "Tienes un buen manejo de los temas, pero aún puedes mejorar.";
-			break;
-		case 7:
-		case 6:
-			mensajeFinal = "Manejas algunos aspectos importantes, pero es necesario fortalecer el estudio de los temas.";
-			break;
-		default://Cualquier otro (5 ó menos)
-			mensajeFinal = "Revisa nuevamente los contenidos de la unidad.";
-		}
+		if(buenas === total){
+            		mensajeFinal = "¡Excelente!";
+        	} else if(buenas === total-1){
+            		mensajeFinal = "¡Bien!";
+        	} else {
+            		mensajeFinal = "Revisa nuevamente el tema.";
+        	}
 		retroalimentar(mensajeFinal+"<br/>Obtuviste <b>"+buenas+"</b> de <b>"+total+"</b>.");
 	} else {
 		retroalimentar(mensajeFinal);
