@@ -8,9 +8,9 @@ function iniciar(){
 	$($("#completable input")).each(function(index){
 		caja = $(this);
 		caja.attr("class", "" );
-		caja.attr("size", caja.attr("respuesta").length + 2);
+		caja.attr("size", caja.attr("data-respuesta").length + 2);
 		caja.focus(function(e){
-			console.log($(this).attr("respuesta"));
+			console.log($(this).attr("data-respuesta"));
 			$(this).attr("class", "");
 		});
 	});
@@ -24,10 +24,10 @@ function revisar(){
 	$($("#completable input")).each(function(index){
 		caja = $(this);
 		if(caja.val() != ""){
-			if(quitarAcentos(caja.attr("respuesta")) == quitarAcentos(caja.val())){
+			if(quitarAcentos(caja.attr("data-respuesta")) == quitarAcentos(caja.val())){
 				caja.attr("class", "correcto" );
 				caja.prop('disabled', true);
-				caja.val(caja.attr("respuesta"));
+				caja.val(caja.attr("data-respuesta"));
 				++buenas;
 			} else {
 				caja.attr("class", "incorrecto" );
