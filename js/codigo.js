@@ -31,6 +31,13 @@ function revisar(){
 				++buenas;
 			} else {
 				caja.attr("class", "incorrecto" );
+                		if(caja.next().attr('class') === "retroMal"){
+                    			caja.next().html(caja.attr("data-respuesta"));
+                		} else {
+                    			var retroMal = $("<div class='retroMal'></div>");
+                    			retroMal.append(caja.attr("data-respuesta"));
+                    			caja.after(retroMal);
+                		}
 			}
 		} else {
 			mensajeFinal = "Por favor llena todos los campos de texto";
