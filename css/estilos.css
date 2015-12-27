@@ -53,6 +53,10 @@ h2{
 	background-repeat: no-repeat;
 	background-position: right;
 }
+.retroMal{
+	color: red;
+	display: inline-block;
+}
 /*----BOTONES----*/
 button,
 html input[type="button"], /* 1 */
