@@ -8,9 +8,16 @@ function iniciar(){
 	$($("#completable input")).each(function(index){
 		caja = $(this);
 		caja.attr("class", "" );
-		caja.attr("size", caja.attr("data-respuesta").length + 2);
+
+        var respuesta = $(this).data("respuesta");//atributo definido como data-respuesta en index.html
+
+        if(typeof respuesta === "object"){
+            caja.attr("size", String(respuesta[0]).length + 2);
+        } else if (typeof respuesta === "number") {
+            caja.attr("size", caja.attr("data-respuesta").length + 2);
+        }
 		caja.focus(function(e){
-			console.log($(this).attr("data-respuesta"));
+			console.log(respuesta);
 			$(this).attr("class", "");
 		});
 	});
@@ -23,14 +30,30 @@ function revisar(){
 	var mensajeFinal = "";
 	$($("#completable input")).each(function(index){
 		caja = $(this);
-		if(caja.val() != ""){
-			if(quitarAcentos(caja.attr("data-respuesta")) == quitarAcentos(caja.val())){
+		var jCajaRespuesta = $(caja).data("respuesta");
+        if(caja.val() != ""){
+			if(compararResultados(jCajaRespuesta, caja.val())){
 				caja.attr("class", "correcto" );
 				caja.prop('disabled', true);
-				caja.val(caja.attr("data-respuesta"));
+				//caja.val(caja.attr("data-respuesta"));
 				++buenas;
 			} else {
 				caja.attr("class", "incorrecto" );
+                var mensajeMal = "";
+                if(typeof jCajaRespuesta === "object"){
+                    mensajeMal = jCajaRespuesta.join(" o ");
+                    console.log(mensajeMal);
+                } else {
+                    mensajeMal = jCajaRespuesta;
+                }
+
+                if(caja.next().attr('class') === "retroMal"){
+                    caja.next().html(mensajeMal);
+                } else {
+                    var retroMal = $("<div class='retroMal'></div>");
+                    retroMal.append(mensajeMal);
+                    caja.after(retroMal);
+                }
 			}
 		} else {
 			mensajeFinal = "Por favor llena todos los campos de texto";
@@ -53,6 +76,20 @@ function revisar(){
 function retroalimentar(cadena){
 	$('#retroalimentacion').html(cadena);
 }
+
+function compararResultados(valorAtributo, valorEscrito){
+    var respuesta = valorAtributo;
+    if(typeof respuesta === "string"){
+        return quitarAcentos(respuesta) === quitarAcentos(valorEscrito);
+    } else if(typeof respuesta === "number"){
+        return respuesta === parseFloat(valorEscrito);
+    } else if(typeof respuesta === "object"){
+        return respuesta.some(function(elemento){
+            return compararResultados(elemento, valorEscrito);
+        });
+    }
+}
+
 function quitarAcentos(str) {
   str = str.replace(/^\s+|\s+$/g, ''); // trim
   str = str.toLowerCase();
@@ -68,13 +105,16 @@ function quitarAcentos(str) {
     .replace(/-+/g, '-'); // collapse dashes
   return str;
 }
+
+
 function reiniciar(){
-	var caja;
+	/*var caja;
 	$($("#completable input")).each(function(index){
 		caja = $(this);
 		caja.val("");
 		caja.attr("class", "" );
 		caja.prop('disabled', false);
 	});
-	retroalimentar("");
+	retroalimentar("");*/
+	window.location.reload(false);
 }

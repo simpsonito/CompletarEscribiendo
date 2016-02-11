@@ -53,6 +53,11 @@ h2{
 	background-repeat: no-repeat;
 	background-position: right;
 }
+.retroMal{
+	color: red;
+	display: inline-block;
+	border: 1px dashed red;
+}
 /*----BOTONES----*/
 button,
 html input[type="button"], /* 1 */
@@ -107,4 +112,12 @@ input:hover[type="submit"] {
     ol{
         padding-left:1.5em;
     }
+}
+li .retroIndividual{
+	display: none;
+}
+li input.incorrecto ~ .retroIndividual {
+    display: block;
+	padding: 0.5em;
+    background-color: #fedde6;
 }
